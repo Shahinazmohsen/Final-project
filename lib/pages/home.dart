@@ -1,10 +1,11 @@
-
+import 'dart:ui';
 
 import 'package:easy_pos/helpers/sql_helpers.dart';
+import 'package:easy_pos/pages/categories.dart';
+import 'package:easy_pos/widgets/grid_view_item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get_it/get_it.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,67 +15,156 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  bool showloading =true;
-  bool result=false;
+  bool showloading = true;
+  bool result = false;
   @override
-
-   void initState()  {
-  init();
-  super .initState();}
-
-  void init() async {
-     result = await GetIt.I.get<SqlHelper>().createTables(); 
-    showloading= false;
-    setState(() {
-      
-    });
+  void initState() {
+    init();
+    super.initState();
   }
 
-@override
+  void init() async {
+    result = await GetIt.I.get<SqlHelper>().createTables();
+    showloading = false;
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold( 
-      appBar:AppBar(title:Text('easy_pos'),),
-        
-      body: Row(
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
         children: [
-          Text( 'Tables creation'),  Padding( 
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-
-
-            child: showloading ?
-
-              Transform.scale(
-              scale: .5,
-               child: CircularProgressIndicator(
-                color: Colors.black,
-
-            )
-             
-              ):
-
-            
-             CircleAvatar(radius: 10,
-             
-              backgroundColor:
-              result ?
-               Colors.green:
-               Colors.red,
-
-             
+          Row(
+            children: [
+              Expanded(
+                  child: Container(
+                color: Theme.of(context).primaryColor,
+                height: MediaQuery.of(context).size.height / 3,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Easy POS',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 24,
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: showloading
+                                  ? Transform.scale(
+                                      scale: .5,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 10,
+                                      backgroundColor:
+                                          result ? Colors.green : Colors.red,
+                                    ))
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      headerItem('Exchange Rate', '1USD=50EGP'),
+                      headerItem('Today\'s', '1100 EGP'),
+                    ],
+                  ),
+                ),
+              )),
+            ],
+          ),
+          Expanded(
+              child: Container(
+            color: const Color(0xfffbfafb),
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: GridView.count(
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20,
+                crossAxisCount: 2,
+                children: [
+                  GridViewItem(
+                      color: Colors.orange,
+                      iconData: Icons.calculate,
+                      label: 'All Sales',
+                      onTap: () {}),
+                  GridViewItem(
+                    color: Colors.pink,
+                    iconData: Icons.inventory_2,
+                    label: 'Product',
+                    onTap: () {},
+                  ),
+                  GridViewItem(
+                    color: Colors.lightBlue,
+                    iconData: Icons.groups,
+                    label: 'Clients',
+                    onTap: () {},
+                  ),
+                  GridViewItem(
+                    color: Colors.green,
+                    iconData: Icons.point_of_sale,
+                    label: 'New Sale',
+                    onTap: () {},
+                  ),
+                  GridViewItem(
+                    color: Colors.yellow,
+                    iconData: Icons.category,
+                    label: 'Categories',
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CategoriesPage()));
+                    },
+                  ),
+                ],
+              ),
             ),
-             
-           
-            ),
-          ]),
-      
-      floatingActionButton: FloatingActionButton(onPressed: () async{
-        var sqlHelper = GetIt.I.get<SqlHelper>();
+          ))
+        ],
+      ),
+    );
+  }
 
-
-        sqlHelper.createTables();
-      },)
-
-    ); 
+  Widget headerItem(
+    String label,
+    String value,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        elevation: 0,
+        color: Color(0xff216ce0),
+        child: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
