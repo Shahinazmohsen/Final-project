@@ -11,19 +11,26 @@ class SqlHelper {
 
       batch.execute(""" Create table  If not exists categories (
         id integer primary key,
-        name text not null,description text not null)
+        name text not null, 
+        description text not null)
       """);
 
       batch.execute(""" Create table  If not exists products (
         id integer primary key,
         name text,description text,
-        price double,stock integer,isAvailable boolean,
-        image blob,categoryId integer )
+        price double,
+        stock integer,
+        isAvailable boolean,
+        image text,
+        categoryId integer,
+        foreign key(categoryId) references categories(id)
+        ON DELETE RESTRICT)
       """);
       batch.execute(""" Create table  If not exists clients (
         id integer primary key,
         name text,
-        email text, phone text,
+        email text, 
+        phone text,
          address text)
       """);
 

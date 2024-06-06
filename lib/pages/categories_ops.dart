@@ -16,9 +16,19 @@ class CategoriesOpsPage extends StatefulWidget {
 }
 
 class _CategoriesOpsState extends State<CategoriesOpsPage> {
-  var nameTextEditingController = TextEditingController();
-  var descriptionTextEditingController = TextEditingController();
+  TextEditingController? nameTextEditingController;
+  TextEditingController? descriptionTextEditingController;
   var formkey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    nameTextEditingController =
+        TextEditingController(text: widget.category?.name ?? '');
+    descriptionTextEditingController =
+        TextEditingController(text: widget.category?.description ?? '');
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,24 +84,37 @@ class _CategoriesOpsState extends State<CategoriesOpsPage> {
     try {
       if (formkey.currentState!.validate()) {
         var sqlHelper = GetIt.I.get<SqlHelper>();
-
-        //TODO add update logic
-        await sqlHelper.db!.insert(
-            'categories',
-            conflictAlgorithm: ConflictAlgorithm.replace,
-            {
-              'name': nameTextEditingController.text,
-              'description': descriptionTextEditingController.text,
-            });
+        //add C ategory logic
+        if (widget.category == null) {
+          await sqlHelper.db!.insert(
+              'categories',
+              conflictAlgorithm: ConflictAlgorithm.replace,
+              {
+                'name': nameTextEditingController?.text,
+                'description': descriptionTextEditingController?.text,
+              });
+        } else {
+          //undate Category logic
+          await sqlHelper.db!.update(
+              'categories',
+              {
+                'name': nameTextEditingController?.text,
+                'description': descriptionTextEditingController?.text,
+              },
+              where: 'id= ?',
+              whereArgs: [widget.category?.id]);
+        }
 
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.green,
           content: Text(
-            'Category added successfully',
+            widget.category == null
+                ? 'Category added successfully'
+                : 'Category updated successfully',
             style: TextStyle(color: Colors.white),
           ),
         ));
-        Navigator.pop(context);
+        Navigator.pop(context, true);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

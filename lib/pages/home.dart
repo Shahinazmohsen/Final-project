@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:easy_pos/helpers/sql_helpers.dart';
 import 'package:easy_pos/pages/categories.dart';
+import 'package:easy_pos/pages/products.dart';
 import 'package:easy_pos/widgets/grid_view_item.dart';
 import 'package:flutter/material.dart';
 
@@ -32,55 +31,59 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Container(),
       appBar: AppBar(),
       body: Column(
         children: [
           Row(
             children: [
               Expanded(
-                  child: Container(
-                color: Theme.of(context).primaryColor,
-                height: MediaQuery.of(context).size.height / 3,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Easy POS',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 24,
+                child: Container(
+                  color: Theme.of(context).primaryColor,
+                  height: MediaQuery.of(context).size.height / 3,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Easy POS',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 24,
+                              ),
                             ),
-                          ),
-                          Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: showloading
-                                  ? Transform.scale(
-                                      scale: .5,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : CircleAvatar(
-                                      radius: 10,
-                                      backgroundColor:
-                                          result ? Colors.green : Colors.red,
-                                    ))
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      headerItem('Exchange Rate', '1USD=50EGP'),
-                      headerItem('Today\'s', '1100 EGP'),
-                    ],
+                            Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: showloading
+                                    ? Transform.scale(
+                                        scale: .5,
+                                        child: const CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 10,
+                                        backgroundColor:
+                                            result ? Colors.green : Colors.red,
+                                      ))
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        headerItem('Exchange Rate', '1USD= 50 Egp'),
+                        headerItem('Today\'s Sales', '1100 Egp'),
+                      ],
+                    ),
                   ),
                 ),
-              )),
+              ),
             ],
           ),
           Expanded(
@@ -94,15 +97,21 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 2,
                 children: [
                   GridViewItem(
-                      color: Colors.orange,
-                      iconData: Icons.calculate,
-                      label: 'All Sales',
-                      onTap: () {}),
+                    color: Colors.orange,
+                    iconData: Icons.calculate,
+                    label: 'All Sales',
+                    onTap: () {},
+                  ),
                   GridViewItem(
                     color: Colors.pink,
                     iconData: Icons.inventory_2,
-                    label: 'Product',
-                    onTap: () {},
+                    label: 'Products',
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductPage()));
+                    },
                   ),
                   GridViewItem(
                     color: Colors.lightBlue,
@@ -157,10 +166,18 @@ class _HomePageState extends State<HomePage> {
                 label,
                 style: TextStyle(
                   color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                value,
+                style: TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                 ),
-              )
+              ),
             ],
           ),
         ),
