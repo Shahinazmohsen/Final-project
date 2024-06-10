@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppTextFormField extends StatelessWidget {
   final String? labelText;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   const AppTextFormField(
-      {this.labelText, this.controller, this.validator, super.key});
+      {this.labelText,
+      this.controller,
+      this.validator,
+      this.keyboardType,
+      this.inputFormatters,
+      super.key});
 
   InputBorder get TextFieldBorder => OutlineInputBorder(
         borderRadius: BorderRadius.circular(5),
@@ -14,6 +22,8 @@ class AppTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      inputFormatters: inputFormatters,
+      keyboardType: keyboardType,
       validator: validator,
       controller: controller,
       decoration: InputDecoration(

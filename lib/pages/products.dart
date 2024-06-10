@@ -101,14 +101,15 @@ On P.categoryId=C.id""");
             ),
             Expanded(
               child: AppTable(
-                columns: [
+                minWidth: 1100,
+                columns: const [
                   DataColumn(label: Text('Id')),
                   DataColumn(label: Text('Name')),
                   DataColumn(label: Text('Description')),
                   DataColumn(label: Text('Price')),
                   DataColumn(label: Text('Stock')),
                   DataColumn(label: Text('isAvailable')),
-                  DataColumn(label: Text('Image')),
+                  DataColumn(label: Center(child: Text('Image'))),
                   DataColumn(label: Text('CAT Name')),
                   DataColumn(label: Text('CAT Description')),
                   DataColumn(label: Center(child: Text('Actions'))),
@@ -143,7 +144,9 @@ class ProductsDataSource extends DataTableSource {
       DataCell(Text('${products?[index].price}')),
       DataCell(Text('${products?[index].stock}')),
       DataCell(Text('${products?[index].isAvailable}')),
-      DataCell(Image.network(products?[index].image ?? '')),
+      DataCell(Center(
+        child: Image.network(products?[index].image ?? ''),
+      )),
       DataCell(Text('${products?[index].categoryName}')),
       DataCell(Text('${products?[index].categoryDescription}')),
       DataCell(Row(
