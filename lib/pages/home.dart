@@ -1,4 +1,5 @@
 import 'package:easy_pos/helpers/sql_helpers.dart';
+import 'package:easy_pos/pages/all_sales.dart';
 import 'package:easy_pos/pages/categories.dart';
 import 'package:easy_pos/pages/clients.dart';
 import 'package:easy_pos/pages/sale_ops.dart';
@@ -111,7 +112,12 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.orange,
                       iconData: Icons.calculate,
                       label: 'All Sales',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AllSalesPage()));
+                      },
                     ),
                     GridViewItem(
                       color: Colors.pink,
