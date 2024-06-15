@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:easy_pos/helpers/sql_helpers.dart';
 import 'package:easy_pos/models/product.dart';
 import 'package:easy_pos/widgets/app_elevated_button.dart';
@@ -82,6 +80,9 @@ class _ProductOpsPageState extends State<ProductOpsPage> {
                     return null;
                   },
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 AppTextFormField(
                   labelText: 'Image Url',
                   controller: imageTextEditingController,
@@ -113,7 +114,7 @@ class _ProductOpsPageState extends State<ProductOpsPage> {
                           }),
                     ),
                     const SizedBox(
-                      height: 20,
+                      width: 20,
                     ),
                     Expanded(
                       child: AppTextFormField(
@@ -179,8 +180,9 @@ class _ProductOpsPageState extends State<ProductOpsPage> {
     try {
       if (formkey.currentState!.validate()) {
         var sqlHelper = GetIt.I.get<SqlHelper>();
-        //add C ategory logic
+
         if (widget.product == null) {
+          //add Category logic
           await sqlHelper.db!.insert(
               'products',
               conflictAlgorithm: ConflictAlgorithm.replace,
@@ -195,15 +197,21 @@ class _ProductOpsPageState extends State<ProductOpsPage> {
                 'isAvailabe': isAvailable ?? false,
               });
         } else {
-          //undate Category logic
-          //await sqlHelper.db!.update(
-          //       'categories',
-          //{
-          // 'name': nameTextEditingController?.text,
-          // 'description': descriptionTextEditingController?.text,
-          // },
-          // where: 'id= ?',
-          //whereArgs: [widget.product?.id]);
+          //update Category logic
+          await sqlHelper.db!.update(
+              'products',
+              {
+                'name': nameTextEditingController?.text,
+                'description': descriptionTextEditingController?.text,
+                'price':
+                    double.parse(priceTextEditingController?.text ?? '0.0'),
+                'stock': int.parse(stockTextEditingController?.text ?? '0'),
+                'image': imageTextEditingController?.text,
+                'categoryId': selectedCategoryId,
+                'isAvailabe': isAvailable ?? false,
+              },
+              where: 'id= ?',
+              whereArgs: [widget.product?.id]);
         }
 
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -7,15 +7,20 @@ class AppTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final int? maxLengh;
+  final AutovalidateMode? autovalidateMode;
+
   const AppTextFormField(
       {this.labelText,
       this.controller,
       this.validator,
       this.keyboardType,
       this.inputFormatters,
+      this.maxLengh,
+      this.autovalidateMode,
       super.key});
 
-  InputBorder get TextFieldBorder => OutlineInputBorder(
+  InputBorder get textFieldBorder => OutlineInputBorder(
         borderRadius: BorderRadius.circular(5),
       );
 
@@ -26,16 +31,18 @@ class AppTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       controller: controller,
+      maxLength: maxLengh,
+      autovalidateMode: autovalidateMode,
       decoration: InputDecoration(
-        border: TextFieldBorder,
-        focusedBorder: TextFieldBorder.copyWith(
+        border: textFieldBorder,
+        focusedBorder: textFieldBorder.copyWith(
           borderSide: BorderSide(
             width: 2,
             color: Theme.of(context).primaryColor,
           ),
         ),
-        enabledBorder: TextFieldBorder,
-        errorBorder: TextFieldBorder.copyWith(
+        enabledBorder: textFieldBorder,
+        errorBorder: textFieldBorder.copyWith(
           borderSide: BorderSide(
             width: 2,
             color: Theme.of(context).colorScheme.error,

@@ -1,8 +1,12 @@
 import 'package:easy_pos/helpers/sql_helpers.dart';
 import 'package:easy_pos/pages/categories.dart';
+import 'package:easy_pos/pages/clients.dart';
+import 'package:easy_pos/pages/sale_ops.dart';
 import 'package:easy_pos/pages/products.dart';
 import 'package:easy_pos/widgets/grid_view_item.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:get_it/get_it.dart';
 
@@ -31,6 +35,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //floatingActionButton: FloatingActionButton(onPressed: () async {
+      //var sqlHelper = GetIt.I.get<SqlHelper>();
+      //await sqlHelper.db!.rawQuery('PRAGMA foreign_keys= ON');
+      //var result = await sqlHelper.db!.rawQuery('PRAGMA foreign_key');
+
+      // print(result);
+      // }),
       drawer: Container(),
       appBar: AppBar(),
       body: Column(
@@ -49,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               'Easy POS',
                               style: TextStyle(
                                 color: Colors.white,
@@ -87,59 +98,70 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           Expanded(
-              child: Container(
-            color: const Color(0xfffbfafb),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: GridView.count(
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
-                crossAxisCount: 2,
-                children: [
-                  GridViewItem(
-                    color: Colors.orange,
-                    iconData: Icons.calculate,
-                    label: 'All Sales',
-                    onTap: () {},
-                  ),
-                  GridViewItem(
-                    color: Colors.pink,
-                    iconData: Icons.inventory_2,
-                    label: 'Products',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductPage()));
-                    },
-                  ),
-                  GridViewItem(
-                    color: Colors.lightBlue,
-                    iconData: Icons.groups,
-                    label: 'Clients',
-                    onTap: () {},
-                  ),
-                  GridViewItem(
-                    color: Colors.green,
-                    iconData: Icons.point_of_sale,
-                    label: 'New Sale',
-                    onTap: () {},
-                  ),
-                  GridViewItem(
-                    color: Colors.yellow,
-                    iconData: Icons.category,
-                    label: 'Categories',
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CategoriesPage()));
-                    },
-                  ),
-                ],
+            child: Container(
+              color: const Color(0xfffbfafb),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: GridView.count(
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 20,
+                  crossAxisCount: 2,
+                  children: [
+                    GridViewItem(
+                      color: Colors.orange,
+                      iconData: Icons.calculate,
+                      label: 'All Sales',
+                      onTap: () {},
+                    ),
+                    GridViewItem(
+                      color: Colors.pink,
+                      iconData: Icons.inventory_2,
+                      label: 'Products',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ProductPage()));
+                      },
+                    ),
+                    GridViewItem(
+                      color: Colors.lightBlue,
+                      iconData: Icons.groups,
+                      label: 'Clients',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ClientsPage()));
+                      },
+                    ),
+                    GridViewItem(
+                      color: Colors.green,
+                      iconData: Icons.point_of_sale,
+                      label: 'New Sale',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SaleOpsPage()));
+                      },
+                    ),
+                    GridViewItem(
+                      color: Colors.yellow,
+                      iconData: Icons.category,
+                      label: 'Categories',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CategoriesPage()));
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ))
+          )
         ],
       ),
     );
@@ -164,15 +186,15 @@ class _HomePageState extends State<HomePage> {
             children: [
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w800,
-                  fontSize: 14,
+                  fontSize: 16,
                 ),
               ),
               Text(
                 value,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
                   fontSize: 14,

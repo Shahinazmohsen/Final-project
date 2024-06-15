@@ -1,55 +1,53 @@
 import 'package:easy_pos/helpers/sql_helpers.dart';
-import 'package:easy_pos/models/category.dart';
+import 'package:easy_pos/models/client.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get_it/get_it.dart';
 
-class CategoriesDropDown extends StatefulWidget {
+class ClientDropDown extends StatefulWidget {
   final int? selectedValue;
   final void Function(int?)? onChanged;
-  const CategoriesDropDown(
-      {required this.onChanged, this.selectedValue, super.key});
+  const ClientDropDown({this.selectedValue, this.onChanged, super.key});
 
   @override
-  State<CategoriesDropDown> createState() => _CategoriesDropDownState();
+  State<ClientDropDown> createState() => _ClientDropDownState();
 }
 
-class _CategoriesDropDownState extends State<CategoriesDropDown> {
-  List<Category>? categories;
+class _ClientDropDownState extends State<ClientDropDown> {
+  List<Client>? clients;
   @override
   void initState() {
-    getCategories();
+    getClients();
     super.initState();
   }
 
-  void getCategories() async {
+  void getClients() async {
     try {
       var sqlHelper = GetIt.I.get<SqlHelper>();
-      var data = await sqlHelper.db!.query('categories');
+      var data = await sqlHelper.db!.query('clients');
       if (data.isNotEmpty) {
-        categories ??= [];
+        clients ??= [];
         for (var item in data) {
-          categories?.add(Category.fromJson(item));
+          clients?.add(Client.fromJson(item));
         }
       } else {
-        categories = [];
+        clients = [];
       }
     } catch (e) {
-      categories = [];
-      print('Error in get Categories $e');
+      clients = [];
+      print('Error in get Clients $e');
     }
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return categories == null
+    return clients == null
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : (categories?.isEmpty ?? false)
+        : (clients?.isEmpty ?? false)
             ? Center(
-                child: Text('No categories found'),
+                child: Text('No client found'),
               )
             : Row(
                 children: [
@@ -66,12 +64,12 @@ class _CategoriesDropDownState extends State<CategoriesDropDown> {
                             value: widget.selectedValue,
                             isExpanded: true,
                             underline: SizedBox(),
-                            hint: Text('Select Category'),
+                            hint: Text('Select Client'),
                             items: [
-                              for (var category in categories!)
+                              for (var client in clients!)
                                 DropdownMenuItem(
-                                  child: Text(category.name ?? 'No name'),
-                                  value: category.id,
+                                  child: Text(client.name ?? 'No name'),
+                                  value: client.id,
                                 )
                             ],
                             onChanged: widget.onChanged),

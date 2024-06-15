@@ -14,14 +14,15 @@ class AppTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: Theme.of(context)
-          .copyWith(iconTheme: IconThemeData(color: Colors.black, size: 25)),
+      data: Theme.of(context).copyWith(
+        iconTheme: const IconThemeData(color: Colors.black, size: 26),
+      ),
       child: PaginatedDataTable2(
         onPageChanged: (index) {},
-        empty: Center(
+        hidePaginator: false,
+        empty: const Center(
           child: Text('No data found'),
         ),
-        hidePaginator: false,
         minWidth: minWidth,
         fit: FlexFit.tight,
         isHorizontalScrollBarVisible: true,
