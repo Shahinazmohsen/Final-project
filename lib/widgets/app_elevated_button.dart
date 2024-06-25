@@ -14,8 +14,9 @@ class AppElevatedButton extends StatelessWidget {
               fontSize: 16,
               fontWeight: FontWeight.w800,
             ),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
             fixedSize: const Size(double.maxFinite, 60),
             backgroundColor: Theme.of(context).primaryColor,
             foregroundColor: Colors.white),

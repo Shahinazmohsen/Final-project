@@ -182,7 +182,6 @@ class _ProductOpsPageState extends State<ProductOpsPage> {
         var sqlHelper = GetIt.I.get<SqlHelper>();
 
         if (widget.product == null) {
-          //add Category logic
           await sqlHelper.db!.insert(
               'products',
               conflictAlgorithm: ConflictAlgorithm.replace,
@@ -194,7 +193,7 @@ class _ProductOpsPageState extends State<ProductOpsPage> {
                 'stock': int.parse(stockTextEditingController?.text ?? '0'),
                 'image': imageTextEditingController?.text,
                 'categoryId': selectedCategoryId,
-                'isAvailabe': isAvailable ?? false,
+                'isAvailable': isAvailable ?? false,
               });
         } else {
           //update Category logic
@@ -218,8 +217,8 @@ class _ProductOpsPageState extends State<ProductOpsPage> {
           backgroundColor: Colors.green,
           content: Text(
             widget.product == null
-                ? 'Category added successfully'
-                : 'Category updated successfully',
+                ? 'Product added successfully'
+                : 'Product updated successfully',
             style: TextStyle(color: Colors.white),
           ),
         ));
@@ -237,9 +236,4 @@ class _ProductOpsPageState extends State<ProductOpsPage> {
       );
     }
   }
-}
-
-@override
-Widget build(BuildContext context) {
-  return const Placeholder();
 }

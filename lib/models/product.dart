@@ -7,7 +7,7 @@ class Product {
   bool? isAvailable;
   String? image;
   int? categoryId;
-  int? categoryName;
+  String? categoryName;
   String? categoryDescription;
 
   Product();

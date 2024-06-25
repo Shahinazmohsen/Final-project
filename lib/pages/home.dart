@@ -5,7 +5,7 @@ import 'package:easy_pos/pages/clients.dart';
 import 'package:easy_pos/pages/sale_ops.dart';
 import 'package:easy_pos/pages/products.dart';
 import 'package:easy_pos/widgets/grid_view_item.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ProductPage()));
+                                builder: (context) => const ProductsPage()));
                       },
                     ),
                     GridViewItem(
@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         color: Color(0xff216ce0),
         child: Padding(
-          padding: const EdgeInsets.all(30),
+          padding: const EdgeInsets.all(20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

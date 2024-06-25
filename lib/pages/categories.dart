@@ -1,6 +1,8 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:easy_pos/helpers/sql_helpers.dart';
 import 'package:easy_pos/models/category.dart';
+
+import 'package:easy_pos/models/category_sorting.dart';
 import 'package:easy_pos/pages/categories_ops.dart';
 import 'package:easy_pos/widgets/app_table.dart';
 
@@ -16,6 +18,8 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
+  var sortAscendingEx = true;
+
   List<Category>? categories;
   @override
   void initState() {
@@ -101,7 +105,20 @@ class _CategoriesPageState extends State<CategoriesPage> {
             Expanded(
               child: AppTable(
                 columns: [
-                  DataColumn(label: Text('Id')),
+                  DataColumn(
+                      numeric: true,
+                      onSort: (columnIndex, ascending) {
+                        sortAscendingEx = ascending;
+                        setState(() {});
+                        if (ascending) {
+                          sortAscending();
+                        } else {
+                          sortDescending();
+                        }
+                        print('xxx${columnIndex}');
+                        print('xxx${ascending}');
+                      },
+                      label: Text('Id')),
                   DataColumn(label: Text('Name')),
                   DataColumn(label: Text('Description')),
                   DataColumn(label: Center(child: Text('Actions'))),
@@ -215,4 +232,45 @@ class CategoriesDataSource extends DataTableSource {
   int get rowCount => categories?.length ?? 0;
   @override
   int get selectedRowCount => 0;
+}
+
+var data = [Categorys(id: 0, name: 'name', description: ' description')];
+void sortAscending() {
+  for (var i = 0; i < data.length; i++) {
+    if (i + 1 == data.length) break;
+    if (data[i].id < data[i + 1].id) {
+      continue;
+    } else {
+      var temp = data[i];
+      data[i] = data[i + 1];
+      data[i + 1] = temp;
+      sortAscending();
+    }
+  }
+}
+
+void sortDescending() {
+  for (var i = 0; i < data.length; i++) {
+    if (i + 1 == data.length) break;
+    if (data[i].id > data[i + 1].id) {
+      continue;
+    } else {
+      var temp = data[i];
+      data[i] = data[i + 1];
+      data[i + 1] = temp;
+      sortDescending();
+    }
+  }
+}
+
+List<DataRow> getRows(List<Category> data) {
+  List<DataRow> result = [];
+  for (var categorys in data) {
+    result.add(DataRow(cells: [
+      DataCell(Text('${categorys.id}')),
+      DataCell(Text('${categorys.name}')),
+      DataCell(Text('${categorys.description}')),
+    ]));
+  }
+  return result;
 }

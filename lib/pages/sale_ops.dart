@@ -25,7 +25,7 @@ class _SaleOpsPageState extends State<SaleOpsPage> {
   List<Product>? products;
   List<OrderItem>? selectedOrderItems;
   var newPrice = 0.0;
-  var savedAmount = 0.0;
+
   double? totalPrice;
   double? originalPrice;
   double? discount;
@@ -198,6 +198,7 @@ On P.categoryId=C.id""");
                                       });
                                     });
                                 setState(() {});
+                                setState(() {});
                               },
                               icon: const Icon(Icons.add),
                               color: Colors.black,
@@ -247,16 +248,16 @@ On P.categoryId=C.id""");
                         const SizedBox(height: 20),
                         TextField(
                           decoration: const InputDecoration(
-                            hintText: '100',
+                            hintText: '',
                             labelText: 'Original Price',
                             suffix: Text("\$"),
                           ),
                           onChanged: (value) =>
-                              originalPrice = double.parse(value),
+                              totalPrice = double.parse(value),
                         ),
                         TextField(
                           decoration: const InputDecoration(
-                            hintText: '20',
+                            hintText: '',
                             labelText: 'Discount Percentage',
                             suffix: Text("%"),
                           ),
@@ -265,7 +266,7 @@ On P.categoryId=C.id""");
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          'Discount Price: ${calculateDiscount}',
+                          'New Price: ${calculateDiscount}',
                           style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 16.0,
@@ -363,11 +364,11 @@ On P.categoryId=C.id""");
   }
 
   double? get calculateDiscount {
-    setState(() {
-      savedAmount = (totalPrice ?? 0) * (discount ?? 0);
+    var newPrice = 0.0;
+    for (var orderItem in selectedOrderItems ?? []) {
       newPrice = totalPrice ?? 0 - ((totalPrice ?? 0) * (discount ?? 0));
-    });
-    return (newPrice);
+    }
+    return newPrice;
   }
 
   void onRemoveOrderItem(int productId) {

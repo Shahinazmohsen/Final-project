@@ -2,7 +2,7 @@ class Client {
   int? id;
   String? name;
   String? email;
-  int? phone;
+  String? phone;
   String? address;
 
   Client();

@@ -1,19 +1,20 @@
 import 'package:easy_pos/helpers/sql_helpers.dart';
 import 'package:easy_pos/models/product.dart';
+
 import 'package:easy_pos/pages/products_ops.dart';
 import 'package:easy_pos/widgets/app_table.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:data_table_2/data_table_2.dart';
 
-class ProductPage extends StatefulWidget {
-  const ProductPage({super.key});
+class ProductsPage extends StatefulWidget {
+  const ProductsPage({super.key});
 
   @override
-  State<ProductPage> createState() => _ProductPageState();
+  State<ProductsPage> createState() => _ProductsPageState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class _ProductsPageState extends State<ProductsPage> {
   List<Product>? products;
   @override
   void initState() {
@@ -76,7 +77,7 @@ On P.categoryId=C.id""");
 
                 var sqlHelper = await GetIt.I.get<SqlHelper>();
                 var data = await sqlHelper.db!.rawQuery(
-                    """ select * from products where name like '%$text%' OR  description like '%$text%'
+                    """ Select * from products where name like '%$text%' OR  description like '%$text%'
                    """);
                 if (data.isNotEmpty) {
                   products = [];
@@ -170,7 +171,7 @@ On P.categoryId=C.id""");
       if (dialogResult ?? false) {
         var sqlHelper = GetIt.I.get<SqlHelper>();
         await sqlHelper.db!
-            .delete('product', where: 'id=?', whereArgs: [product.id]);
+            .delete('products', where: 'id=?', whereArgs: [product.id]);
         getProducts();
       }
     } catch (e) {

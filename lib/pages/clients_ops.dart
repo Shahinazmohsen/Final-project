@@ -45,78 +45,82 @@ class _ClientsOpsState extends State<ClientsOpsPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Form(
-          key: formkey,
-          child: Column(
-            children: [
-              AppTextFormField(
-                labelText: 'Name',
-                controller: nameTextEditingController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Name is required';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              AppTextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                keyboardType: TextInputType.emailAddress,
-                inputFormatters: [
-                  FilteringTextInputFormatter.singleLineFormatter
+        child: SingleChildScrollView(
+          child: Expanded(
+            child: Form(
+              key: formkey,
+              child: Column(
+                children: [
+                  AppTextFormField(
+                    labelText: 'Name',
+                    controller: nameTextEditingController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Name is required';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  AppTextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    keyboardType: TextInputType.emailAddress,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.singleLineFormatter
+                    ],
+                    labelText: 'Email',
+                    controller: emailTextEditingController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Email is required';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  AppTextFormField(
+                    keyboardType: TextInputType.phone,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                    labelText: 'Phone',
+                    maxLengh: 11,
+                    controller: phoneTextEditingController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Phone is required';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  AppTextFormField(
+                    labelText: 'Address',
+                    controller: addressTextEditingController,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Address is required';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  AppElevatedButton(
+                      label: widget.client == null ? 'Submit' : ' Edit',
+                      onPressed: () async {
+                        await onSubmit();
+                      })
                 ],
-                labelText: 'Email',
-                controller: emailTextEditingController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Email is required';
-                  }
-                  return null;
-                },
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              AppTextFormField(
-                keyboardType: TextInputType.phone,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                labelText: 'Phone',
-                maxLengh: 11,
-                controller: phoneTextEditingController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Phone is required';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              AppTextFormField(
-                labelText: 'Address',
-                controller: addressTextEditingController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Address is required';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              AppElevatedButton(
-                  label: widget.client == null ? 'Submit' : ' Edit',
-                  onPressed: () async {
-                    await onSubmit();
-                  })
-            ],
+            ),
           ),
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:easy_pos/helpers/sql_helpers.dart';
 import 'package:easy_pos/models/client.dart';
+import 'package:easy_pos/models/client_sorting.dart';
 import 'package:easy_pos/pages/clients_ops.dart';
 import 'package:easy_pos/widgets/app_table.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,9 @@ class ClientsPage extends StatefulWidget {
 }
 
 class _ClientsPageState extends State<ClientsPage> {
+  var sortAscendingEx = true;
   List<Client>? clients;
+
   @override
   void initState() {
     getClients();
@@ -99,8 +102,21 @@ class _ClientsPageState extends State<ClientsPage> {
             ),
             Expanded(
               child: AppTable(
-                columns: const [
-                  DataColumn(label: Text('Id')),
+                columns: [
+                  DataColumn(
+                      numeric: true,
+                      onSort: (columnIndex, ascending) {
+                        sortAscendingEx = ascending;
+                        setState(() {});
+                        if (ascending) {
+                          sortAscending();
+                        } else {
+                          sortDescending();
+                        }
+                        print('xxx${columnIndex}');
+                        print('xxx${ascending}');
+                      },
+                      label: Text('Id')),
                   DataColumn(label: Text('Name')),
                   DataColumn(label: Text('Email')),
                   DataColumn(label: Text('Phone')),
@@ -215,4 +231,48 @@ class ClientsDataSource extends DataTableSource {
   int get rowCount => clients?.length ?? 0;
   @override
   int get selectedRowCount => 0;
+}
+
+var data = [
+  Clients(
+      id: 0, name: 'name', email: 'email', phone: 'phone', address: 'address')
+];
+void sortAscending() {
+  for (var i = 0; i < data.length; i++) {
+    if (i + 1 == data.length) break;
+    if (data[i].id < data[i + 1].id) {
+      continue;
+    } else {
+      var temp = data[i];
+      data[i] = data[i + 1];
+      data[i + 1] = temp;
+      sortAscending();
+    }
+  }
+}
+
+void sortDescending() {
+  for (var i = 0; i < data.length; i++) {
+    if (i + 1 == data.length) break;
+    if (data[i].id > data[i + 1].id) {
+      continue;
+    } else {
+      var temp = data[i];
+      data[i] = data[i + 1];
+      data[i + 1] = temp;
+      sortDescending();
+    }
+  }
+}
+
+List<DataRow> getRows(List<Clients> data) {
+  List<DataRow> result = [];
+  for (var clients in data) {
+    result.add(DataRow(cells: [
+      DataCell(Text('${clients.id}')),
+      DataCell(Text('${clients.name}')),
+      DataCell(Text('${clients.phone}')),
+    ]));
+  }
+  return result;
 }

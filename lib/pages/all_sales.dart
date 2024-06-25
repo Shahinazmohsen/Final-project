@@ -1,6 +1,8 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:easy_pos/helpers/sql_helpers.dart';
 import 'package:easy_pos/models/order.dart';
+import 'package:easy_pos/models/order_item.dart';
+import 'package:easy_pos/pages/order_items.dart';
 import 'package:easy_pos/widgets/app_table.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -14,9 +16,11 @@ class AllSalesPage extends StatefulWidget {
 
 class _AllSalesPageState extends State<AllSalesPage> {
   List<Order>? orders;
+  List<OrderItem>? orderItem;
   @override
   void initState() {
     getOrders();
+
     super.initState();
   }
 
@@ -65,11 +69,55 @@ On O.clientId=C.id""");
           ],
           source: OrdersDataSource(
               orders: orders,
-              onShow: (order) async {},
-              onDelete: (order) async {}),
+              onShow: (orders) async {
+                var result = await Navigator.push(context,
+                    MaterialPageRoute(builder: (ctx) => OrderProductItems()));
+              },
+              onDelete: (orders) async {
+                await onDelete(orders);
+              }),
         ),
       ),
     );
+  }
+
+  Future<void> onDelete(Order orders) async {
+    try {
+      var dialogResult = await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Delete Order'),
+              content:
+                  const Text('Are you sure you want to delete this Order?'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, false);
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  },
+                  child: const Text('Delete'),
+                )
+              ],
+            );
+          });
+
+      if (dialogResult ?? false) {
+        var sqlHelper = GetIt.I.get<SqlHelper>();
+        await sqlHelper.db!
+            .delete('Orders', where: 'id=?', whereArgs: [orders.id]);
+        getOrders();
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Error in deleting order ${orders.id}')));
+    }
   }
 }
 
@@ -96,7 +144,9 @@ class OrdersDataSource extends DataTableSource {
           IconButton(
             icon: const Icon(Icons.visibility),
             onPressed: () {
-              onShow!(orders![index]);
+              onShow!(
+                orders![index],
+              );
             },
           ),
           IconButton(

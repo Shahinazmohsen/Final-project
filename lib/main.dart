@@ -5,7 +5,6 @@ import 'package:get_it/get_it.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   var sqlHelper = SqlHelper();
   await sqlHelper.initDb();
   if (sqlHelper.db != null) {
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Easy Pos',
+      title: 'Easy POS',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
             backgroundColor: Color(0xff0156da), foregroundColor: Colors.white),

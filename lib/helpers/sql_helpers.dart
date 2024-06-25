@@ -23,10 +23,11 @@ class SqlHelper {
 
       batch.execute(""" Create table  If not exists products (
         id integer primary key,
-        name text,description text,
+        name text,
+        description text,
         price double,
         stock integer,
-        isAvailable boolean,
+        isAvailable bool,
         image text,
         categoryId integer,
         foreign key(categoryId) references categories(id)
@@ -42,7 +43,7 @@ class SqlHelper {
       batch.execute(""" Create table  If not exists orders (
         id integer primary key,
         label text,
-        totalPrice price,
+        totalPrice price real,
         discount real,
         clientId integer,
         foreign key(clientId) references clients(id)
